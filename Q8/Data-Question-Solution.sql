@@ -75,4 +75,21 @@ with cte as
 select distinct repeated_users from cte
 where repeated_users is not null
 
+-----------------------------------------------------------------------------------
+
+with cte as
+(
+	select
+	distinct
+	l3.user_name
+	from login_details l1
+	left join login_Details l2
+	on l2.login_id = l1.login_id + 1 and l1.user_name = l2.user_name
+	left join login_details l3
+	on l3.login_id = l1.login_id + 2 and l1.user_name = l3.user_name
+)
+select user_name from cte where user_name is not null
+
+
+
 
