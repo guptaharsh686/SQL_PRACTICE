@@ -21,6 +21,26 @@
   	from olympics_history oh
   	group by games
 
-4. 
+4. Which year saw the highest and lowest no of countries participating in olympics
 
+Problem Statement: Write a SQL query to return the Olympic Games which had the highest participating countries and the lowest participating countries.
+
+   with cte as
+  (
+    select
+      games, count(*) as no_of_countries
+    from
+      (select
+        games,nc.region
+      from olympics_history oh
+      inner join olympics_history_noc_regions nc on oh.noc = nc.noc
+      group by games,nc.region) data
+    group by games
+  )
+  select distinct
+    concat(first_value(games) over(order by no_of_countries),'-',first_value(no_of_countries) over(order by no_of_countries)) as least_countries
+    ,concat(first_value(games) over(order by no_of_countries desc),'-',first_value(no_of_countries) over(order by no_of_countries desc)) as most_countries
+  from cte;
+
+5.
     
